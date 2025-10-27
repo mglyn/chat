@@ -1,0 +1,14 @@
+{"msgid":3,"name":"zhangsan","password":"123"}
+{"msgid":3,"name":"lisi","password":"123"}
+
+{"msgid":1,"id":1,"password":"123"} //登录  
+{"msgid":1,"id":2,"password":"123"}
+
+{"msgid":5,"id":1,"to":2,"msg":"HELLO"} // 聊天
+
+select a.id,a.name,a.state from 
+User a inner join Friend b on b.friendid = a.id where b.userid = %d
+
+{"msgid":6,"id":1,"to":2} // 加好友
+
+{"msgid":123213,"id":1,"to":2} 
