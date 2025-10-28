@@ -1,11 +1,7 @@
 #pragma once
 
-#include <muduo/net/TcpServer.h>
-#include <muduo/net/EventLoop.h>
+#include <mymuduo/TcpServer.h>
 #include <string>
-
-using namespace muduo;
-using namespace muduo::net;
 
 class ChatServer{
 public:

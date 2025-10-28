@@ -20,7 +20,7 @@ int main(int argc, char** argv){
     signal(SIGINT, exceptionExitHandler);
 
     EventLoop loop;
-    InetAddress addr(ip, port);
+    InetAddress addr(port, ip);
     ChatServer server(&loop, addr, "chatServer");
     server.start();
     loop.loop();
