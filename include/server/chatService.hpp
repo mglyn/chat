@@ -2,8 +2,8 @@
 
 #include <map>
 #include <functional>
-#include <muduo/net/TcpConnection.h>
-#include <muduo/base/Logging.h>
+#include <mymuduo/TcpServer.h>
+#include <mymuduo/Logger.h>
 #include <memory>
 #include <mutex>
 
@@ -16,9 +16,6 @@
 #include "redis.hpp"
 
 using json = nlohmann::json;
-
-using namespace muduo;
-using namespace muduo::net;
 
 using MsgHandler = std::function<void(const TcpConnectionPtr&, json&, Timestamp)>;
 

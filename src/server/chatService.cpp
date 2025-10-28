@@ -32,12 +32,12 @@ ChatService::ChatService(){
         _redis.init_notify_handler(std::bind(&ChatService::handleRedisSubscribeMessage, this, _1, _2));
     }
     else{
-        LOG_FATAL << "connecting redis fail";
+        LOG_FATAL("connecting redis fail");
     }
 }
 
 void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
-    LOG_INFO << "do login service";
+    LOG_INFO("do login service");
 
     int id = js["id"];
     std::string passwd = js["password"];
@@ -128,7 +128,7 @@ void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
 }
 
 void ChatService::reg(const TcpConnectionPtr& conn, json& js, Timestamp){
-    LOG_INFO << "do reg service";
+    LOG_INFO("do reg service");
 
     std::string name = js["name"];
     std::string password = js["password"];
@@ -154,7 +154,7 @@ void ChatService::reg(const TcpConnectionPtr& conn, json& js, Timestamp){
 MsgHandler ChatService::getHandler(int typeMsg){
     if(!_msgHandlerMap.count(typeMsg)){
         return [typeMsg](auto a, auto b, auto c){
-            LOG_ERROR << typeMsg << "can not find handler";
+            LOG_ERROR("%d can not find handler", typeMsg);
         };
     }
     return _msgHandlerMap[typeMsg];
