@@ -32,12 +32,13 @@ ChatService::ChatService(){
         _redis.init_notify_handler(std::bind(&ChatService::handleRedisSubscribeMessage, this, _1, _2));
     }
     else{
-        LOG_FATAL("connecting redis fail");
+        LOG_FATAL << "connecting redis fail";
+        
     }
 }
 
 void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
-    LOG_INFO("do login service");
+    LOG_INFO << "do login service";
 
     int id = js["id"];
     std::string passwd = js["password"];
@@ -49,7 +50,7 @@ void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
             response["msgid"] = MSG_ACK_LOGIN;
             response["errno"] = 2;
             response["errmsg"] = "该帐号已经登录";
-            conn->send(response.dump());
+            conn->send(response.dump() + "\r\n");
         }
         else{
             // 登录成功
@@ -115,7 +116,7 @@ void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
                 response["groups"] = groupV;
             }
 
-            conn->send(response.dump());
+            conn->send(response.dump() + "\r\n");
         }
     }
     else {
@@ -123,12 +124,12 @@ void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
         response["msgid"] = MSG_ACK_LOGIN;
         response["errno"] = 1;
         response["errmsg"] = "用户名或密码错误";
-        conn->send(response.dump());
+        conn->send(response.dump() + "\r\n");
     }
 }
 
 void ChatService::reg(const TcpConnectionPtr& conn, json& js, Timestamp){
-    LOG_INFO("do reg service");
+    LOG_INFO << "do reg service";
 
     std::string name = js["name"];
     std::string password = js["password"];
@@ -141,20 +142,20 @@ void ChatService::reg(const TcpConnectionPtr& conn, json& js, Timestamp){
         response["msgid"] = MSG_ACK_REG;
         response["errno"] = 0;
         response["id"] = user.getId();
-        conn->send(response.dump());
+        conn->send(response.dump() + "\r\n");
     }
     else{
         json response;
         response["msgid"] = MSG_ACK_REG;
         response["errno"] = 1;
-        conn->send(response.dump());
+        conn->send(response.dump() + "\r\n");
     }
 }
 
 MsgHandler ChatService::getHandler(int typeMsg){
     if(!_msgHandlerMap.count(typeMsg)){
         return [typeMsg](auto a, auto b, auto c){
-            LOG_ERROR("%d can not find handler", typeMsg);
+            LOG_ERROR << typeMsg << " can not find handler";
         };
     }
     return _msgHandlerMap[typeMsg];
@@ -180,7 +181,7 @@ void ChatService::chat(const TcpConnectionPtr& conn, json& js, Timestamp){
         // 在线直接转发消息
         std::lock_guard<std::mutex> guard(_connMutex);
         if(auto it = _userConnMap.find(to); it != _userConnMap.end()){
-            it->second->send(js.dump());
+            it->second->send(js.dump() + "\r\n");
             return;
         }
     }
@@ -229,7 +230,7 @@ void ChatService::groupChat(const TcpConnectionPtr& conn, json& js, Timestamp){
     std::lock_guard<std::mutex> guard(_connMutex);
     for(int id : idVec){
         if(auto it = _userConnMap.find(id); it != _userConnMap.end()){
-            it->second->send(js.dump());
+            it->second->send(js.dump() + "\r\n");
         } 
         else{
             // 检查是否在线
@@ -268,7 +269,7 @@ void ChatService::handleRedisSubscribeMessage(int id, std::string msg){
 
     std::lock_guard<std::mutex> guard(_connMutex);
     if(auto it = _userConnMap.find(id); it != _userConnMap.end()){
-        it->second->send(msg);
+        it->second->send(msg + "\r\n");
     }
     else{
         // 有可能突然下线 保存消息

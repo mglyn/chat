@@ -6,12 +6,15 @@
   CMakeFiles/ChatServer.dir/chatService.cpp.o \
   CMakeFiles/ChatServer.dir/main.cpp.o \
   CMakeFiles/ChatServer.dir/db/db.cpp.o \
+  CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.o \
   CMakeFiles/ChatServer.dir/model/friendModel.cpp.o \
   CMakeFiles/ChatServer.dir/model/groupModel.cpp.o \
   CMakeFiles/ChatServer.dir/model/offlineMessageModel.cpp.o \
   CMakeFiles/ChatServer.dir/model/userModel.cpp.o \
   CMakeFiles/ChatServer.dir/redis/redis.cpp.o \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib/libmymuduo.so \
+  CMakeFiles/ChatServer.dir/redis/redis_pool_singleton.cpp.o \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib/libmuduo_net.a \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib/libmuduo_base.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libmysqlclient.so \
   /usr/local/lib/libhiredis.so \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libpthread.a \
@@ -41,12 +44,12 @@
   /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o \
-  /lib64/ld-linux-x86-64.so.2 \
   /lib/x86_64-linux-gnu/libssl.so.3 \
   /lib/x86_64-linux-gnu/libcrypto.so.3 \
   /lib/x86_64-linux-gnu/libresolv.so.2 \
   /lib/x86_64-linux-gnu/libz.so.1 \
   /lib/x86_64-linux-gnu/libzstd.so.1 \
+  /lib64/ld-linux-x86-64.so.2 \
   /lib/x86_64-linux-gnu/libm.so.6
 
 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/Scrt1.o:
@@ -63,6 +66,8 @@ CMakeFiles/ChatServer.dir/main.cpp.o:
 
 CMakeFiles/ChatServer.dir/db/db.cpp.o:
 
+CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.o:
+
 CMakeFiles/ChatServer.dir/model/friendModel.cpp.o:
 
 CMakeFiles/ChatServer.dir/model/groupModel.cpp.o:
@@ -73,7 +78,11 @@ CMakeFiles/ChatServer.dir/model/userModel.cpp.o:
 
 CMakeFiles/ChatServer.dir/redis/redis.cpp.o:
 
-/usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib/libmymuduo.so:
+CMakeFiles/ChatServer.dir/redis/redis_pool_singleton.cpp.o:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib/libmuduo_net.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib/libmuduo_base.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/libmysqlclient.so:
 
@@ -133,8 +142,6 @@ CMakeFiles/ChatServer.dir/redis/redis.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crtn.o:
 
-/lib64/ld-linux-x86-64.so.2:
-
 /lib/x86_64-linux-gnu/libssl.so.3:
 
 /lib/x86_64-linux-gnu/libcrypto.so.3:
@@ -144,5 +151,7 @@ CMakeFiles/ChatServer.dir/redis/redis.cpp.o:
 /lib/x86_64-linux-gnu/libz.so.1:
 
 /lib/x86_64-linux-gnu/libzstd.so.1:
+
+/lib64/ld-linux-x86-64.so.2:
 
 /lib/x86_64-linux-gnu/libm.so.6:

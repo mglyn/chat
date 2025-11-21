@@ -202,6 +202,30 @@ db/db.cpp.s:
 	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/db/db.cpp.s
 .PHONY : db/db.cpp.s
 
+db/mysql_pool_singleton.o: db/mysql_pool_singleton.cpp.o
+.PHONY : db/mysql_pool_singleton.o
+
+# target to build an object file
+db/mysql_pool_singleton.cpp.o:
+	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.o
+.PHONY : db/mysql_pool_singleton.cpp.o
+
+db/mysql_pool_singleton.i: db/mysql_pool_singleton.cpp.i
+.PHONY : db/mysql_pool_singleton.i
+
+# target to preprocess a source file
+db/mysql_pool_singleton.cpp.i:
+	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.i
+.PHONY : db/mysql_pool_singleton.cpp.i
+
+db/mysql_pool_singleton.s: db/mysql_pool_singleton.cpp.s
+.PHONY : db/mysql_pool_singleton.s
+
+# target to generate assembly for a file
+db/mysql_pool_singleton.cpp.s:
+	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.s
+.PHONY : db/mysql_pool_singleton.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -346,6 +370,30 @@ redis/redis.cpp.s:
 	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/redis/redis.cpp.s
 .PHONY : redis/redis.cpp.s
 
+redis/redis_pool_singleton.o: redis/redis_pool_singleton.cpp.o
+.PHONY : redis/redis_pool_singleton.o
+
+# target to build an object file
+redis/redis_pool_singleton.cpp.o:
+	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/redis/redis_pool_singleton.cpp.o
+.PHONY : redis/redis_pool_singleton.cpp.o
+
+redis/redis_pool_singleton.i: redis/redis_pool_singleton.cpp.i
+.PHONY : redis/redis_pool_singleton.i
+
+# target to preprocess a source file
+redis/redis_pool_singleton.cpp.i:
+	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/redis/redis_pool_singleton.cpp.i
+.PHONY : redis/redis_pool_singleton.cpp.i
+
+redis/redis_pool_singleton.s: redis/redis_pool_singleton.cpp.s
+.PHONY : redis/redis_pool_singleton.s
+
+# target to generate assembly for a file
+redis/redis_pool_singleton.cpp.s:
+	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/redis/redis_pool_singleton.cpp.s
+.PHONY : redis/redis_pool_singleton.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -364,6 +412,9 @@ help:
 	@echo "... db/db.o"
 	@echo "... db/db.i"
 	@echo "... db/db.s"
+	@echo "... db/mysql_pool_singleton.o"
+	@echo "... db/mysql_pool_singleton.i"
+	@echo "... db/mysql_pool_singleton.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
@@ -382,6 +433,9 @@ help:
 	@echo "... redis/redis.o"
 	@echo "... redis/redis.i"
 	@echo "... redis/redis.s"
+	@echo "... redis/redis_pool_singleton.o"
+	@echo "... redis/redis_pool_singleton.i"
+	@echo "... redis/redis_pool_singleton.s"
 .PHONY : help
 
 

@@ -121,11 +121,11 @@ int main(int argc, char **argv)
             js["msgid"] = MSG_LOGIN;
             js["id"] = id;
             js["password"] = pwd;
-            string request = js.dump();
+            string request = js.dump() + "\r\n";
 
             g_isLoginSuccess = false;
 
-            int len = send(clientfd, request.c_str(), strlen(request.c_str()) + 1, 0);
+            int len = send(clientfd, request.c_str(), request.length(), 0);
             if (len == -1)
             {
                 cerr << "send login msg error:" << request << endl;
@@ -154,9 +154,9 @@ int main(int argc, char **argv)
             js["msgid"] = MSG_REG;
             js["name"] = name;
             js["password"] = pwd;
-            string request = js.dump();
+            string request = js.dump() + "\r\n";
 
-            int len = send(clientfd, request.c_str(), strlen(request.c_str()) + 1, 0);
+            int len = send(clientfd, request.c_str(), request.length(), 0);
             if (len == -1)
             {
                 cerr << "send reg msg error:" << request << endl;
@@ -288,8 +288,8 @@ void readTaskHandler(int clientfd)
 {
     for (;;)
     {
-        char buffer[1024] = {0};
-        int len = recv(clientfd, buffer, 1024, 0);  // 阻塞了
+        char buffer[4096] = {0};
+        int len = recv(clientfd, buffer, 4096, 0);  // 阻塞了
         if (-1 == len || 0 == len)
         {
             close(clientfd);
@@ -297,7 +297,17 @@ void readTaskHandler(int clientfd)
         }
 
         // 接收ChatServer转发的数据，反序列化生成json数据对象
-        json js = json::parse(buffer);
+        string recv_buf(buffer, len);
+        size_t pos = 0;
+        while ((pos = recv_buf.find("\r\n")) != std::string::npos)
+        {
+            string msg = recv_buf.substr(0, pos);
+            recv_buf.erase(0, pos + 2);
+            if (msg.empty())
+            {
+                continue;
+            }
+            json js = json::parse(msg);
         int msgtype = js["msgid"].get<int>();
         if (MSG_CHAT == msgtype)
         {
@@ -325,6 +335,7 @@ void readTaskHandler(int clientfd)
             doRegResponse(js);
             sem_post(&rwsem);    // 通知主线程，注册结果处理完成
             continue;
+        }
         }
     }
 }
@@ -443,9 +454,9 @@ void addfriend(int clientfd, string str)
     js["msgid"] = MSG_ADD_FRIEND;
     js["id"] = g_currentUser.getId();
     js["friendid"] = friendid;
-    string buffer = js.dump();
+    string buffer = js.dump() + "\r\n";
 
-    int len = send(clientfd, buffer.c_str(), strlen(buffer.c_str()) + 1, 0);
+    int len = send(clientfd, buffer.c_str(), buffer.length(), 0);
     if (-1 == len)
     {
         cerr << "send addfriend msg error -> " << buffer << endl;
@@ -471,9 +482,9 @@ void chat(int clientfd, string str)
     js["toid"] = friendid;
     js["msg"] = message;
     js["time"] = getCurrentTime();
-    string buffer = js.dump();
+    string buffer = js.dump() + "\r\n";
 
-    int len = send(clientfd, buffer.c_str(), strlen(buffer.c_str()) + 1, 0);
+    int len = send(clientfd, buffer.c_str(), buffer.length(), 0);
     if (-1 == len)
     {
         cerr << "send chat msg error -> " << buffer << endl;
@@ -497,9 +508,9 @@ void creategroup(int clientfd, string str)
     js["id"] = g_currentUser.getId();
     js["groupname"] = groupname;
     js["groupdesc"] = groupdesc;
-    string buffer = js.dump();
+    string buffer = js.dump() + "\r\n";
 
-    int len = send(clientfd, buffer.c_str(), strlen(buffer.c_str()) + 1, 0);
+    int len = send(clientfd, buffer.c_str(), buffer.length(), 0);
     if (-1 == len)
     {
         cerr << "send creategroup msg error -> " << buffer << endl;
@@ -513,9 +524,9 @@ void addgroup(int clientfd, string str)
     js["msgid"] = MSG_ADD_GROUP;
     js["id"] = g_currentUser.getId();
     js["groupid"] = groupid;
-    string buffer = js.dump();
+    string buffer = js.dump() + "\r\n";
 
-    int len = send(clientfd, buffer.c_str(), strlen(buffer.c_str()) + 1, 0);
+    int len = send(clientfd, buffer.c_str(), buffer.length(), 0);
     if (-1 == len)
     {
         cerr << "send addgroup msg error -> " << buffer << endl;
@@ -541,9 +552,9 @@ void groupchat(int clientfd, string str)
     js["groupid"] = groupid;
     js["msg"] = message;
     js["time"] = getCurrentTime();
-    string buffer = js.dump();
+    string buffer = js.dump() + "\r\n";
 
-    int len = send(clientfd, buffer.c_str(), strlen(buffer.c_str()) + 1, 0);
+    int len = send(clientfd, buffer.c_str(), buffer.length(), 0);
     if (-1 == len)
     {
         cerr << "send groupchat msg error -> " << buffer << endl;
@@ -555,9 +566,9 @@ void logout(int clientfd, string)
     json js;
     js["msgid"] = MSG_LOGOUT;
     js["id"] = g_currentUser.getId();
-    string buffer = js.dump();
+    string buffer = js.dump() + "\r\n";
 
-    int len = send(clientfd, buffer.c_str(), strlen(buffer.c_str()) + 1, 0);
+    int len = send(clientfd, buffer.c_str(), buffer.length(), 0);
     if (-1 == len)
     {
         cerr << "send logout msg error -> " << buffer << endl;

@@ -8,6 +8,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ChatServer.dir/chatService.cpp.o.d"
   "CMakeFiles/ChatServer.dir/db/db.cpp.o"
   "CMakeFiles/ChatServer.dir/db/db.cpp.o.d"
+  "CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.o"
+  "CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.o.d"
   "CMakeFiles/ChatServer.dir/main.cpp.o"
   "CMakeFiles/ChatServer.dir/main.cpp.o.d"
   "CMakeFiles/ChatServer.dir/model/friendModel.cpp.o"
@@ -20,6 +22,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ChatServer.dir/model/userModel.cpp.o.d"
   "CMakeFiles/ChatServer.dir/redis/redis.cpp.o"
   "CMakeFiles/ChatServer.dir/redis/redis.cpp.o.d"
+  "CMakeFiles/ChatServer.dir/redis/redis_pool_singleton.cpp.o"
+  "CMakeFiles/ChatServer.dir/redis/redis_pool_singleton.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -5,6 +5,7 @@
 #include <functional>
 #include <string>
 #include <iostream>
+#include <thread>
 
 using json = nlohmann::json;
 
@@ -14,7 +15,8 @@ ChatServer::ChatServer(EventLoop* loop, const InetAddress& listenAddr, const std
     _server.setConnectionCallback(std::bind(&ChatServer::onConnection, this, std::placeholders::_1));
     _server.setMessageCallback(
         std::bind(&ChatServer::onMessage, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-    //_server.setThreadNum(1);
+    
+    _server.setThreadNum(std::thread::hardware_concurrency());
 }
 
 void ChatServer::start(){
@@ -30,11 +32,15 @@ void ChatServer::onConnection(const TcpConnectionPtr& conn){
 }
 
 void ChatServer::onMessage(const TcpConnectionPtr& conn, Buffer* buffer, Timestamp time){
+    while (const char* crlf = buffer->findCRLF())
+    {
+        std::string request(buffer->peek(), crlf - buffer->peek());
+        buffer->retrieveUntil(crlf + 2);
 
-    std::string buf = buffer->retrieveAllAsString();
-    // 反序列化
-    json js = json::parse(buf);
-    // 网络模块业务模块解耦
-    // 获得各种业务的handler并调用
-    ChatService::getInstance()->getHandler(js["msgid"].get<int>())(conn, js, time);
+        // 反序列化
+        json js = json::parse(request);
+        // 网络模块业务模块解耦
+        // 获得各种业务的handler并调用
+        ChatService::getInstance()->getHandler(js["msgid"].get<int>())(conn, js, time);
+    }
 }

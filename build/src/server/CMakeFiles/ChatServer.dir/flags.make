@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/mgl/桌面/chatServer/chat/include -I/home/mgl/桌面/chatServer/chat/include/server -I/home/mgl/桌面/chatServer/chat/include/server/db -I/home/mgl/桌面/chatServer/chat/include/server/model -I/home/mgl/桌面/chatServer/chat/include/server/redis -I/home/mgl/桌面/chatServer/chat/thirdparty
 
-CXX_FLAGS = -g -g
+CXX_FLAGS = -g
 

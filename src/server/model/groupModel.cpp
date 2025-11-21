@@ -1,5 +1,6 @@
 #include "groupModel.hpp"
 #include "db.hpp"
+#include "server/db/mysql_conn_guard.hpp"
 
 // 创建群组
 bool GroupModel::createGroup(Group &group){
@@ -8,16 +9,13 @@ bool GroupModel::createGroup(Group &group){
     sprintf(sql, "insert into AllGroup(groupname, groupdesc) values('%s', '%s')",
             group.getName().c_str(), group.getDesc().c_str());
 
-    MySQL mysql;
-    if (mysql.connect())
-    {
-        if (mysql.update(sql))
-        {
-            group.setId(mysql_insert_id(mysql.getConnection()));
-            return true;
-        }
+    MySQLConnGuard guard;
+    MYSQL* conn = guard.get();
+    if (!conn) return false;
+    if (mysql_query(conn, sql) == 0) {
+        group.setId(mysql_insert_id(conn));
+        return true;
     }
-
     return false;
 }
 
@@ -28,10 +26,10 @@ void GroupModel::addGroup(int userid, int groupid, string role){
     sprintf(sql, "insert into GroupUser values(%d, %d, '%s')",
             groupid, userid, role.c_str());
 
-    MySQL mysql;
-    if (mysql.connect())
-    {
-        mysql.update(sql);
+    MySQLConnGuard guard;
+    MYSQL* conn = guard.get();
+    if (conn) {
+        mysql_query(conn, sql);
     }
 }
 
@@ -48,16 +46,15 @@ vector<Group> GroupModel::queryGroups(int userid){
 
     vector<Group> groupVec;
 
-    MySQL mysql;
-    if (mysql.connect())
-    {
-        MYSQL_RES *res = mysql.query(sql);
-        if (res != nullptr)
-        {
+    MySQLConnGuard guard;
+    MYSQL* conn = guard.get();
+    if (!conn) return groupVec;
+    if (mysql_query(conn, sql) == 0) {
+        MYSQL_RES *res = mysql_use_result(conn);
+        if (res != nullptr) {
             MYSQL_ROW row;
             // 查出userid所有的群组信息
-            while ((row = mysql_fetch_row(res)) != nullptr)
-            {
+            while ((row = mysql_fetch_row(res)) != nullptr) {
                 Group group;
                 group.setId(atoi(row[0]));
                 group.setName(row[1]);
@@ -74,20 +71,20 @@ vector<Group> GroupModel::queryGroups(int userid){
             inner join GroupUser b on b.userid = a.id where b.groupid=%d",
                 group.getId());
 
-        MYSQL_RES *res = mysql.query(sql);
-        if (res != nullptr)
-        {
-            MYSQL_ROW row;
-            while ((row = mysql_fetch_row(res)) != nullptr)
-            {
-                GroupUser user;
-                user.setId(atoi(row[0]));
-                user.setName(row[1]);
-                user.setState(row[2]);
-                user.setRole(row[3]);
-                group.getUsers().push_back(user);
+        if (mysql_query(conn, sql) == 0) {
+            MYSQL_RES *res = mysql_use_result(conn);
+            if (res != nullptr) {
+                MYSQL_ROW row;
+                while ((row = mysql_fetch_row(res)) != nullptr) {
+                    GroupUser user;
+                    user.setId(atoi(row[0]));
+                    user.setName(row[1]);
+                    user.setState(row[2]);
+                    user.setRole(row[3]);
+                    group.getUsers().push_back(user);
+                }
+                mysql_free_result(res);
             }
-            mysql_free_result(res);
         }
     }
     return groupVec;
@@ -99,12 +96,14 @@ vector<int> GroupModel::queryGroupUsers(int userid, int groupid){
     sprintf(sql, "select userid from GroupUser where groupid = %d and userid != %d", groupid, userid);
 
     vector<int> idVec;
-    MySQL mysql;
-    if (mysql.connect()){
-        MYSQL_RES *res = mysql.query(sql);
-        if (res != nullptr){
+    MySQLConnGuard guard;
+    MYSQL* conn = guard.get();
+    if (!conn) return idVec;
+    if (mysql_query(conn, sql) == 0) {
+        MYSQL_RES *res = mysql_use_result(conn);
+        if (res != nullptr) {
             MYSQL_ROW row;
-            while ((row = mysql_fetch_row(res)) != nullptr){
+            while ((row = mysql_fetch_row(res)) != nullptr) {
                 idVec.push_back(atoi(row[0]));
             }
             mysql_free_result(res);
