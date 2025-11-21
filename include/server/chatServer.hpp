@@ -1,7 +1,10 @@
 #pragma once
 
-#include <mymuduo/TcpServer.h>
+#include <muduo/net/TcpServer.h>
 #include <string>
+
+using namespace muduo::net;
+using muduo::Timestamp;
 
 class ChatServer{
 public:
