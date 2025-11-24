@@ -32,6 +32,8 @@ src/server/CMakeFiles/ChatServer.dir/model/offlineMessageModel.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar2-decl.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar2.h \
  /usr/include/c++/14/type_traits /usr/include/c++/14/bits/version.h \
  /usr/include/c++/14/bits/allocator.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -95,22 +97,28 @@ src/server/CMakeFiles/ChatServer.dir/model/offlineMessageModel.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
+ /usr/include/x86_64-linux-gnu/bits/select2.h \
+ /usr/include/x86_64-linux-gnu/bits/select-decl.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h \
  /usr/include/c++/14/bits/std_abs.h /usr/include/c++/14/cstdio \
  /usr/include/stdio.h /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
  /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/c++/14/cerrno /usr/include/errno.h \
- /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
- /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2-decl.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/c++/14/cerrno \
+ /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
  /usr/include/c++/14/bits/charconv.h \
@@ -122,7 +130,8 @@ src/server/CMakeFiles/ChatServer.dir/model/offlineMessageModel.cpp.o: \
  /usr/include/c++/14/bits/stl_vector.h \
  /usr/include/c++/14/bits/stl_bvector.h \
  /usr/include/c++/14/bits/vector.tcc \
- /home/mgl/桌面/chatServer/chat/include/server/db/db.hpp \
+ /home/mgl/桌面/chatServer/chat/include/server/db/mysql_conn_guard.hpp \
+ /home/mgl/桌面/chatServer/chat/include/server/db/mysql_pool_singleton.hpp \
  /usr/include/mysql/mysql.h \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/stdbool.h \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
@@ -136,8 +145,6 @@ src/server/CMakeFiles/ChatServer.dir/model/offlineMessageModel.cpp.o: \
  /usr/include/mysql/plugin_auth_common.h \
  /usr/include/mysql/mysql_version.h /usr/include/mysql/mysql_time.h \
  /usr/include/mysql/errmsg.h \
- /home/mgl/桌面/chatServer/chat/include/server/db/mysql_conn_guard.hpp \
- /home/mgl/桌面/chatServer/chat/include/server/db/mysql_pool_singleton.hpp \
  /home/mgl/桌面/chatServer/chat/include/server/common/object_pool.hpp \
  /usr/include/c++/14/queue /usr/include/c++/14/deque \
  /usr/include/c++/14/bits/stl_deque.h /usr/include/c++/14/bits/deque.tcc \
@@ -201,4 +208,46 @@ src/server/CMakeFiles/ChatServer.dir/model/offlineMessageModel.cpp.o: \
  /usr/include/c++/14/bits/atomic_lockfree_defines.h \
  /usr/include/c++/14/backward/auto_ptr.h \
  /usr/include/c++/14/pstl/glue_memory_defs.h \
- /usr/include/c++/14/pstl/execution_defs.h
+ /usr/include/c++/14/pstl/execution_defs.h \
+ /usr/include/c++/14/unordered_set \
+ /usr/include/c++/14/bits/unordered_set.h \
+ /usr/include/muduo/base/Logging.h /usr/include/muduo/base/LogStream.h \
+ /usr/include/muduo/base/noncopyable.h \
+ /usr/include/muduo/base/StringPiece.h /usr/include/string.h \
+ /usr/include/strings.h \
+ /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+ /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+ /usr/include/muduo/base/Types.h /usr/include/assert.h \
+ /usr/include/muduo/base/Timestamp.h /usr/include/muduo/base/copyable.h \
+ /usr/include/boost/operators.hpp /usr/include/c++/14/iterator \
+ /usr/include/c++/14/bits/stream_iterator.h \
+ /usr/include/c++/14/bits/streambuf_iterator.h \
+ /usr/include/c++/14/streambuf /usr/include/c++/14/bits/ios_base.h \
+ /usr/include/c++/14/bits/locale_classes.h \
+ /usr/include/c++/14/bits/locale_classes.tcc \
+ /usr/include/c++/14/system_error /usr/include/c++/14/stdexcept \
+ /usr/include/c++/14/bits/streambuf.tcc /usr/include/boost/config.hpp \
+ /usr/include/boost/config/user.hpp \
+ /usr/include/boost/config/detail/select_compiler_config.hpp \
+ /usr/include/boost/config/compiler/gcc.hpp \
+ /usr/include/boost/config/detail/select_stdlib_config.hpp \
+ /usr/include/c++/14/version \
+ /usr/include/boost/config/stdlib/libstdcpp3.hpp /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd-decl.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ /usr/include/linux/close_range.h \
+ /usr/include/boost/config/detail/select_platform_config.hpp \
+ /usr/include/boost/config/platform/linux.hpp \
+ /usr/include/boost/config/detail/posix_features.hpp \
+ /usr/include/boost/config/detail/suffix.hpp \
+ /usr/include/boost/config/helper_macros.hpp \
+ /usr/include/boost/config/detail/cxx_composite.hpp \
+ /usr/include/boost/detail/workaround.hpp \
+ /usr/include/boost/config/workaround.hpp \
+ /usr/include/boost/core/addressof.hpp

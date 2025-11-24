@@ -1,6 +1,5 @@
 
 #include "friendModel.hpp"
-#include "db.hpp"
 #include "mysql_conn_guard.hpp"
 #include <algorithm>
 

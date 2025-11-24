@@ -1,1 +1,1 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/ChatClient.dir/link.d CMakeFiles/ChatClient.dir/main.cpp.o -o /home/mgl/桌面/chatServer/chat/bin/ChatClient  -lpthread
+/usr/bin/c++ -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/ChatClient.dir/link.d CMakeFiles/ChatClient.dir/main.cpp.o -o /home/mgl/桌面/chatServer/chat/bin/ChatClient  -lpthread

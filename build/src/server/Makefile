@@ -178,30 +178,6 @@ chatService.cpp.s:
 	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/chatService.cpp.s
 .PHONY : chatService.cpp.s
 
-db/db.o: db/db.cpp.o
-.PHONY : db/db.o
-
-# target to build an object file
-db/db.cpp.o:
-	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/db/db.cpp.o
-.PHONY : db/db.cpp.o
-
-db/db.i: db/db.cpp.i
-.PHONY : db/db.i
-
-# target to preprocess a source file
-db/db.cpp.i:
-	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/db/db.cpp.i
-.PHONY : db/db.cpp.i
-
-db/db.s: db/db.cpp.s
-.PHONY : db/db.s
-
-# target to generate assembly for a file
-db/db.cpp.s:
-	cd /home/mgl/桌面/chatServer/chat/build && $(MAKE) $(MAKESILENT) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/db/db.cpp.s
-.PHONY : db/db.cpp.s
-
 db/mysql_pool_singleton.o: db/mysql_pool_singleton.cpp.o
 .PHONY : db/mysql_pool_singleton.o
 
@@ -409,9 +385,6 @@ help:
 	@echo "... chatService.o"
 	@echo "... chatService.i"
 	@echo "... chatService.s"
-	@echo "... db/db.o"
-	@echo "... db/db.i"
-	@echo "... db/db.s"
 	@echo "... db/mysql_pool_singleton.o"
 	@echo "... db/mysql_pool_singleton.i"
 	@echo "... db/mysql_pool_singleton.s"

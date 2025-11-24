@@ -5,7 +5,6 @@
   CMakeFiles/ChatServer.dir/chatServer.cpp.o \
   CMakeFiles/ChatServer.dir/chatService.cpp.o \
   CMakeFiles/ChatServer.dir/main.cpp.o \
-  CMakeFiles/ChatServer.dir/db/db.cpp.o \
   CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.o \
   CMakeFiles/ChatServer.dir/model/friendModel.cpp.o \
   CMakeFiles/ChatServer.dir/model/groupModel.cpp.o \
@@ -63,8 +62,6 @@ CMakeFiles/ChatServer.dir/chatServer.cpp.o:
 CMakeFiles/ChatServer.dir/chatService.cpp.o:
 
 CMakeFiles/ChatServer.dir/main.cpp.o:
-
-CMakeFiles/ChatServer.dir/db/db.cpp.o:
 
 CMakeFiles/ChatServer.dir/db/mysql_pool_singleton.cpp.o:
 
