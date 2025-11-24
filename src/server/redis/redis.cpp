@@ -11,34 +11,27 @@ Redis::Redis()
 
 Redis::~Redis()
 {
+    // publish 使用池化，归还即可
     if (_publish_context != nullptr)
     {
         RedisPool::instance().release(_publish_context);
+        _publish_context = nullptr;
     }
-
+    // subscribe 为长连接，不放入池，直接关闭
     if (_subcribe_context != nullptr)
     {
-        RedisPool::instance().release(_subcribe_context);
+        redisFree(_subcribe_context);
+        _subcribe_context = nullptr;
     }
 }
 
 bool Redis::connect()
 {
-    // 从池获取publish上下文连接
-    _publish_context = RedisPool::instance().get();
-    if (nullptr == _publish_context)
+    // 订阅使用独立长期连接（不进入池）
+    _subcribe_context = redisConnect("127.0.0.1", 6379);
+    if (nullptr == _subcribe_context || _subcribe_context->err)
     {
-        LOG_ERROR << "Failed to get publish context from pool";
-        return false;
-    }
-
-    // 从池获取subscribe上下文连接
-    _subcribe_context = RedisPool::instance().get();
-    if (nullptr == _subcribe_context)
-    {
-        LOG_ERROR << "Failed to get subscribe context from pool";
-        RedisPool::instance().release(_publish_context);
-        _publish_context = nullptr;
+        LOG_ERROR << "Failed to create subscribe context";
         return false;
     }
 
@@ -49,20 +42,29 @@ bool Redis::connect()
     t.detach();
 
     LOG_INFO << "connect redis-server success!";
-
     return true;
 }
 
 // 向redis指定的通道channel发布消息
 bool Redis::publish(int channel, string message)
 {
-    redisReply *reply = (redisReply *)redisCommand(_publish_context, "PUBLISH %d %s", channel, message.c_str());
+    // 每次发布时从连接池获取一个短连接，使用完后立即归还，避免单个连接在并发场景下被多个线程复用
+    redisContext *ctx = RedisPool::instance().get();
+    if (nullptr == ctx)
+    {
+        LOG_ERROR << "Failed to get publish context from pool";
+        return false;
+    }
+
+    redisReply *reply = (redisReply *)redisCommand(ctx, "PUBLISH %d %s", channel, message.c_str());
     if (nullptr == reply)
     {
         LOG_ERROR << "publish command failed!";
+        RedisPool::instance().release(ctx);
         return false;
     }
     freeReplyObject(reply);
+    RedisPool::instance().release(ctx);
     return true;
 }
 

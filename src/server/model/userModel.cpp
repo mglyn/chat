@@ -1,6 +1,5 @@
 
 #include "userModel.hpp"
-#include "db.hpp"
 #include "server/db/mysql_conn_guard.hpp"
 
 bool UserModel::insert(User& user){

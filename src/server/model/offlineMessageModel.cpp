@@ -1,6 +1,4 @@
 #include "offlineMessageModel.hpp"
-
-#include "db.hpp"
 #include "server/db/mysql_conn_guard.hpp"
 
 bool OfflineMsgModel::insert(int id, std::string msg){
