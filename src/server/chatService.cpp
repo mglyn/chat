@@ -27,6 +27,7 @@ ChatService::ChatService(){
     _msgHandlerMap.insert({MSG_CREATE_GROUP, std::bind(&ChatService::createGroup, this, _1, _2, _3)});
     _msgHandlerMap.insert({MSG_ADD_GROUP, std::bind(&ChatService::addGroup, this, _1, _2, _3)});
     _msgHandlerMap.insert({MSG_GROUP_CHAT, std::bind(&ChatService::groupChat, this, _1, _2, _3)});
+    _msgHandlerMap.insert({MSG_PING, std::bind(&ChatService::ping, this, _1, _2, _3)});
 
     if(_redis.connect()){
         _redis.init_notify_handler(std::bind(&ChatService::handleRedisSubscribeMessage, this, _1, _2));
@@ -35,6 +36,14 @@ ChatService::ChatService(){
         LOG_FATAL << "connecting redis fail";
         
     }
+}
+
+void ChatService::ping(const TcpConnectionPtr& conn, json& js, Timestamp){
+    // 收到客户端心跳，更新活动时间并回复 PONG
+    updateConnectionActivity(conn);
+    json resp;
+    resp["msgid"] = MSG_PONG;
+    conn->send(resp.dump() + "\r\n");
 }
 
 void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
@@ -57,6 +66,7 @@ void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp){
             {
                 std::lock_guard<std::mutex> guard(_connMutex);
                 _userConnMap.insert({id, conn});
+                _connLastActiveMap[conn] = time(nullptr);
             }
 
             // 向redis订阅
@@ -168,6 +178,7 @@ void ChatService::clientCloseException(const TcpConnectionPtr& conn){
         if(auto it = std::find_if(_userConnMap.begin(), _userConnMap.end(), [&conn](const auto& a){return a.second == conn;}); it != _userConnMap.end()){
             id = it->first;
             _userConnMap.erase(it);
+            _connLastActiveMap.erase(conn);
         }
     }
     // 向redis取消订阅
@@ -253,6 +264,7 @@ void ChatService::logout(const TcpConnectionPtr &conn, json &js, Timestamp time)
         auto it = _userConnMap.find(userid);
         if (it != _userConnMap.end())
         {
+            _connLastActiveMap.erase(it->second);
             _userConnMap.erase(it);
         }
     }
@@ -274,5 +286,33 @@ void ChatService::handleRedisSubscribeMessage(int id, std::string msg){
     else{
         // 有可能突然下线 保存消息
         _offlineMsgModel.insert(id, msg);
+    }
+}
+
+void ChatService::updateConnectionActivity(const TcpConnectionPtr& conn){
+    std::lock_guard<std::mutex> guard(_connMutex);
+    auto it = _connLastActiveMap.find(conn);
+    if(it != _connLastActiveMap.end()){
+        it->second = time(nullptr);
+    }
+}
+
+void ChatService::checkIdleConnections(int idleSeconds){
+    std::vector<TcpConnectionPtr> toClose;
+    time_t now = time(nullptr);
+    {
+        std::lock_guard<std::mutex> guard(_connMutex);
+        for(auto &p : _connLastActiveMap){
+            if(now - p.second > idleSeconds){
+                toClose.push_back(p.first);
+            }
+        }
+    }
+
+    for(auto &conn : toClose){
+        LOG_INFO << "closing idle connection";
+        // 触发清理
+        clientCloseException(conn);
+        conn->shutdown();
     }
 }

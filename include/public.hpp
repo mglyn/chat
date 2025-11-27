@@ -14,4 +14,8 @@ enum EnMsgType{
     MSG_CREATE_GROUP,
     MSG_ADD_GROUP,
     MSG_GROUP_CHAT,
+    
+    // Heartbeat
+    MSG_PING = 100,
+    MSG_PONG,
 };

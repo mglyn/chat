@@ -327,6 +327,24 @@ void readTaskHandler(int clientfd)
         {
             doLoginResponse(js); // 处理登录响应的业务逻辑
             sem_post(&rwsem);    // 通知主线程，登录结果处理完成
+            // 登录成功后启动心跳线程（仅启动一次）
+            if (g_isLoginSuccess)
+            {
+                static std::atomic_bool heartbeatStarted{false};
+                if (!heartbeatStarted.exchange(true))
+                {
+                    std::thread([clientfd]() {
+                        while (g_isLoginSuccess)
+                        {
+                            json ping;
+                            ping["msgid"] = MSG_PING;
+                            std::string req = ping.dump() + "\r\n";
+                            send(clientfd, req.c_str(), req.length(), 0);
+                            std::this_thread::sleep_for(std::chrono::seconds(20));
+                        }
+                    }).detach();
+                }
+            }
             continue;
         }
 
@@ -334,6 +352,21 @@ void readTaskHandler(int clientfd)
         {
             doRegResponse(js);
             sem_post(&rwsem);    // 通知主线程，注册结果处理完成
+            continue;
+        }
+        // 如果收到服务器发来的心跳检测, 回复 PONG
+        if (MSG_PING == msgtype)
+        {
+            json pong;
+            pong["msgid"] = MSG_PONG;
+            std::string resp = pong.dump() + "\r\n";
+            send(clientfd, resp.c_str(), resp.length(), 0);
+            continue;
+        }
+        // 处理服务器的 PONG（可选）
+        if (MSG_PONG == msgtype)
+        {
+            // 目前不处理 PONG，未来可用于 RTT/延迟统计
             continue;
         }
         }
